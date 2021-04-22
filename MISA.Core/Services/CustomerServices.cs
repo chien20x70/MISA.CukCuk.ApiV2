@@ -56,6 +56,12 @@ namespace MISA.Core.Services
             return customer;
         }
 
+        public IEnumerable<Customer> GetCustomers(int pageSize, int pageIndex)
+        {
+            var customer = _customerRepository.GetCustomers(pageSize, pageIndex);
+            return customer;
+        }
+
         /// <summary>
         /// Thêm khách hàng
         /// </summary>

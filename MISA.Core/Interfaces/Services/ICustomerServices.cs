@@ -15,6 +15,7 @@ namespace MISA.Core.Interfaces.Services
         public int InsertCustomer(Customer customer);
         public int UpdateCustomer(Guid customerId, Customer customer);
         public int DeleteCustomer(Guid customerId);
+        public IEnumerable<Customer> GetCustomers(int pageSize, int pageIndex);
 
     }
 }

@@ -58,8 +58,8 @@ namespace MISA.Infrastructure.Repository
         {
             IDbConnection dbConnection = new MySqlConnection(_configuration.GetConnectionString("connectionDB"));
             string sql = "Proc_GetCustomers";
-            var customer = dbConnection.Query<Customer>(sql, commandType: CommandType.StoredProcedure);
-            return customer;
+            var customers = dbConnection.Query<Customer>(sql, commandType: CommandType.StoredProcedure);
+            return customers;
         }
 
         /// <summary>
@@ -75,6 +75,17 @@ namespace MISA.Infrastructure.Repository
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@CustomerId", customerId);
             var customer = dbConnection.QueryFirstOrDefault<Customer>(sql, parameters, commandType: CommandType.StoredProcedure);
+            return customer;
+        }
+
+        public IEnumerable<Customer> GetCustomers(int pageSize, int pageIndex)
+        {
+            IDbConnection dbConnection = new MySqlConnection(_configuration.GetConnectionString("connectionDB"));
+            string sql = "Proc_GetCustomerPaging";
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@m_PageIndex", pageIndex);
+            parameters.Add("@m_PageSize", pageSize);
+            var customer = dbConnection.Query<Customer>(sql, parameters, commandType: CommandType.StoredProcedure);
             return customer;
         }
 

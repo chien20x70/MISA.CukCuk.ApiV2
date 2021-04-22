@@ -15,5 +15,6 @@ namespace MISA.Core.Interfaces.Repository
         public int UpdateCustomer(Guid customerId, Customer customer);
         public int DeleteCustomer(Guid customerId);
         public bool CheckCustomerCodeExists(string customerCode);
+        public IEnumerable<Customer> GetCustomers(int pageSize, int pageIndex); 
     }
 }

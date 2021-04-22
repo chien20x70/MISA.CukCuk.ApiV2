@@ -35,14 +35,22 @@ namespace MISA.CukCuk.ApiV2.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var customers = _customerRepository.GetAll();
-            if (customers.Count() > 0)
+            try
             {
-                return Ok(customers);
+                var customers = _customerRepository.GetAll();
+                if (customers.Count() > 0)
+                {
+                    return Ok(customers);
+                }
+                else
+                {
+                    return NoContent();
+                }
             }
-            else
+            catch (Exception)
             {
-                return NoContent();
+
+                throw;
             }
         }
 
@@ -55,14 +63,22 @@ namespace MISA.CukCuk.ApiV2.Controllers
         [HttpGet("{customerId}")]
         public IActionResult Get(Guid customerId)
         {
-            var customer = _customerRepository.GetById(customerId);
-            if (customer != null)
+            try
             {
-                return Ok(customer);
+                var customer = _customerRepository.GetById(customerId);
+                if (customer != null)
+                {
+                    return Ok(customer);
+                }
+                else
+                {
+                    return NoContent();
+                }
             }
-            else
+            catch (Exception)
             {
-                return NoContent();
+
+                throw;
             }
         }
 
@@ -78,14 +94,22 @@ namespace MISA.CukCuk.ApiV2.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Customer customer)
         {
-            var rowAffects = _customerServices.InsertCustomer(customer);
-            if (rowAffects > 0)
+            try
             {
-                return StatusCode(201, rowAffects);
+                var rowAffects = _customerServices.InsertCustomer(customer);
+                if (rowAffects > 0)
+                {
+                    return StatusCode(201, rowAffects);
+                }
+                else
+                {
+                    return NoContent();
+                }
             }
-            else
+            catch (Exception)
             {
-                return NoContent();
+
+                throw;
             }
         }
 
@@ -102,14 +126,22 @@ namespace MISA.CukCuk.ApiV2.Controllers
         [HttpPut("{customerId}")]
         public IActionResult Put(Guid customerId, [FromBody] Customer customer)
         {
-            var rowAffects = _customerServices.UpdateCustomer(customerId, customer);
-            if (rowAffects > 0)
+            try
             {
-                return Ok(customer);
+                var rowAffects = _customerServices.UpdateCustomer(customerId, customer);
+                if (rowAffects > 0)
+                {
+                    return Ok(customer);
+                }
+                else
+                {
+                    return NoContent();
+                }
             }
-            else
+            catch (Exception)
             {
-                return NoContent();
+
+                throw;
             }
         }
 
@@ -125,14 +157,51 @@ namespace MISA.CukCuk.ApiV2.Controllers
         [HttpDelete("{customerId}")]
         public IActionResult Delete(Guid customerId)
         {
-            var rowAffects = _customerServices.DeleteCustomer(customerId);
-            if (rowAffects > 0)
+            try
             {
-                return Ok("Xoa thanh cong");
+                var rowAffects = _customerServices.DeleteCustomer(customerId);
+                if (rowAffects > 0)
+                {
+                    return Ok("Xoa thanh cong");
+                }
+                else
+                {
+                    return NoContent();
+                }
             }
-            else
+            catch (Exception)
             {
-                return NoContent();
+
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Lọc danh sách khách hàng
+        /// </summary>
+        /// <param name="pageNumber">Số khách hàng trong 1 trang</param>
+        /// <param name="pageIndex">Trang số bao nhiêu</param>
+        /// <returns></returns>
+        /// Created By: NXChien 22/04/2021
+        [HttpGet("{pageNumber}/{pageIndex}")]
+        public IActionResult Filters(int pageNumber, int pageIndex)
+        {
+            try
+            {
+                var customer = _customerServices.GetCustomers(pageNumber, pageIndex);
+                if (customer != null)
+                {
+                    return Ok(customer);
+                }
+                else
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }
