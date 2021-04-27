@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MISA.CukCuk.ApiV2.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]s")]
     [ApiController]
     public class CustomerGroupController : ControllerBase
     {
