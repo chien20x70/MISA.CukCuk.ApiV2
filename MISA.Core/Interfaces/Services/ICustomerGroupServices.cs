@@ -1,5 +1,4 @@
-﻿
-using MISA.Core.Model;
+﻿using MISA.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace MISA.Core.Interfaces.Services
 {
-    public interface ICustomerServices : IBaseServices<Customer>
+    public interface ICustomerGroupServices : IBaseServices<CustomerGroup>
     {
-
     }
 }

@@ -12,111 +12,43 @@ using System.Threading.Tasks;
 
 namespace MISA.Infrastructure.Repository
 {
-    public class CustomerRepository : ICustomerRepository
+    public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
     {
-        readonly IConfiguration _configuration;
-        public CustomerRepository(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
 
         /// <summary>
-        /// kiểm tra trùng mã khach hàng
+        /// Check CustomerCode đã tồn tại hay chưa
+        /// CREATED BY: NXCHIEN 27/04/2021
         /// </summary>
         /// <param name="customerCode">Mã khách hàng</param>
-        /// <returns>Trùng thì trả về TRUE</returns>
-        /// CreatedBy: NXChien (21/04/2021)
-        public bool CheckCustomerCodeExists(string customerCode)
+        /// <returns></returns>
+        public bool CheckCustomerCodeExist(string customerCode)
         {
-            IDbConnection dbConnection = new MySqlConnection(_configuration.GetConnectionString("ConnectionDB"));
-            var sqlCommandDuplicate = "Proc_CheckCustomerCodeExists";
-            var check = dbConnection.QueryFirstOrDefault<bool>
-                (sqlCommandDuplicate, param: new { m_CustomerCode = customerCode }, commandType: CommandType.StoredProcedure);
-            return check;
+            using (dbConnection = new MySqlConnection(ConnectionDB))
+            {
+                var sqlCommandDuplicate = "Proc_CheckCustomerCodeExists";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@m_CustomerCode", customerCode);
+                var check = dbConnection.QueryFirstOrDefault<bool>
+                    (sqlCommandDuplicate, param: parameters, commandType: CommandType.StoredProcedure);
+                return check;
+            }
         }
 
         /// <summary>
-        /// Xóa khách hàng
+        /// Kiểm tra số điện thoại đã tồn tại trong DB chưa
+        /// CREATED BY: NXCHIEN 27/04/2021
         /// </summary>
-        /// <param name="customerId">Mã khách hàng</param>
-        /// <returns>rowAffects: Số dòng bị ảnh hướng khi xóa</returns>
-        /// CreatedBy: NXChien (21/04/2021)
-        public int DeleteCustomer(Guid customerId)
+        /// <param name="phoneNumber"></param>
+        /// <returns></returns>
+        public bool CheckPhoneNumberExits(string phoneNumber)
         {
-            IDbConnection dbConnection = new MySqlConnection(_configuration.GetConnectionString("connectionDB"));
-            string sql = "Proc_DeleteCustomer";
-            var rowAffects = dbConnection.Execute(sql, param: new { CustomerId = customerId }, commandType: CommandType.StoredProcedure);
-            return rowAffects;
-        }
-
-        /// <summary>
-        /// Lấy tất cả khách hàng trong DB
-        /// </summary>
-        /// <returns>customers: Danh sách khách hàng</returns>
-        /// CreatedBy: NXChien (21/04/2021)
-        public IEnumerable<Customer> GetAll()
-        {
-            IDbConnection dbConnection = new MySqlConnection(_configuration.GetConnectionString("connectionDB"));
-            string sql = "Proc_GetCustomers";
-            var customers = dbConnection.Query<Customer>(sql, commandType: CommandType.StoredProcedure);
-            return customers;
-        }
-
-        /// <summary>
-        /// Lấy khách hàng theo customerId
-        /// </summary>
-        /// <param name="customerId">Mã khách hàng</param>
-        /// <returns>customer: 1 khách hàng</returns>
-        /// CreatedBy: NXChien (21/04/2021)
-        public Customer GetById(Guid customerId)
-        {
-            IDbConnection dbConnection = new MySqlConnection(_configuration.GetConnectionString("connectionDB"));
-            string sql = "Proc_GetCustomerById";
-            DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("@CustomerId", customerId);
-            var customer = dbConnection.QueryFirstOrDefault<Customer>(sql, parameters, commandType: CommandType.StoredProcedure);
-            return customer;
-        }
-
-        public IEnumerable<Customer> GetCustomers(int pageSize, int pageIndex)
-        {
-            IDbConnection dbConnection = new MySqlConnection(_configuration.GetConnectionString("connectionDB"));
-            string sql = "Proc_GetCustomerPaging";
-            DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("@m_PageIndex", pageIndex);
-            parameters.Add("@m_PageSize", pageSize);
-            var customer = dbConnection.Query<Customer>(sql, parameters, commandType: CommandType.StoredProcedure);
-            return customer;
-        }
-
-        /// <summary>
-        /// Thêm khách hàng
-        /// </summary>
-        /// <param name="customer">Khách hàng</param>
-        /// <returns>rowAffects: Số dòng DB bị ảnh hưởng khi thêm khách hàng</returns>
-        /// CreatedBy: NXChien (21/04/2021)
-        public int InsertCustomer(Customer customer)
-        {
-            IDbConnection dbConnection = new MySqlConnection(_configuration.GetConnectionString("connectionDB"));
-            string sql = "Proc_InsertCustomer";
-            var rowAffects = dbConnection.Execute(sql, customer, commandType: CommandType.StoredProcedure);
-            return rowAffects;
-        }
-
-        /// <summary>
-        /// Sửa khách hàng
-        /// </summary>
-        /// <param name="customerId">Mã khách hàng</param>
-        /// <param name="customer">Khách hàng</param>
-        /// <returns>rowAffects: Số dòng DB bị ảnh hưởng khi sửa khách hàng</returns>
-        /// CreatedBy: NXChien (21/04/2021)
-        public int UpdateCustomer(Guid customerId, Customer customer)
-        {
-            customer.CustomerId = customerId;
-            IDbConnection dbConnection = new MySqlConnection(_configuration.GetConnectionString("connectionDB"));
-            string sql = "Proc_UpdateCustomer";
-            var rowAffects = dbConnection.Execute(sql, param: customer, commandType: CommandType.StoredProcedure);
-            return rowAffects;
+            using (dbConnection = new MySqlConnection(ConnectionDB))
+            {
+                var sqlCommandDuplicate = "Proc_CheckPhoneNumberExists";
+                var check = dbConnection.QueryFirstOrDefault<bool>
+                    (sqlCommandDuplicate, param: new { m_PhoneNumber = phoneNumber }, commandType: CommandType.StoredProcedure);
+                return check;
+            }
         }
     }
 }

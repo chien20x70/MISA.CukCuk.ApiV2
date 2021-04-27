@@ -7,14 +7,23 @@ using System.Threading.Tasks;
 
 namespace MISA.Core.Interfaces.Repository
 {
-    public interface ICustomerRepository
+    public interface ICustomerRepository : IBaseRepository<Customer>
     {
-        public IEnumerable<Customer> GetAll();
-        public Customer GetById(Guid customerId);
-        public int InsertCustomer(Customer customer);
-        public int UpdateCustomer(Guid customerId, Customer customer);
-        public int DeleteCustomer(Guid customerId);
-        public bool CheckCustomerCodeExists(string customerCode);
-        public IEnumerable<Customer> GetCustomers(int pageSize, int pageIndex); 
+        /// <summary>
+        /// Check CustomerCode đã tồn tại hay chưa
+        /// CREATED BY: NXCHIEN 27/04/2021
+        /// </summary>
+        /// <param name="customerCode">Mã khách hàng</param>
+        /// <returns></returns>
+        public bool CheckCustomerCodeExist(string customerCode);
+
+        /// <summary>
+        /// Kiểm tra số điện thoại đã tồn tại trong DB chưa
+        /// CREATED BY: NXCHIEN 27/04/2021
+        /// </summary>
+        /// <param name="phoneNumber"></param>
+        /// <returns></returns>
+        public bool CheckPhoneNumberExits(string phoneNumber);
+
     }
 }
