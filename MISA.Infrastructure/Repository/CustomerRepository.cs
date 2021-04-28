@@ -21,13 +21,24 @@ namespace MISA.Infrastructure.Repository
         /// </summary>
         /// <param name="customerCode">Mã khách hàng</param>
         /// <returns></returns>
-        public bool CheckCustomerCodeExist(string customerCode)
+        public bool CheckCustomerCodeExist(string customerCode, Guid? customerId, bool isCheck)
         {
+            
             using (dbConnection = new MySqlConnection(ConnectionDB))
             {
-                var sqlCommandDuplicate = "Proc_CheckCustomerCodeExists";
+                var sqlCommandDuplicate ="";
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@m_CustomerCode", customerCode);
+                if (isCheck == true) // post
+                {
+                    sqlCommandDuplicate = "Proc_CheckCustomerCodeExists";
+                    parameters.Add("@m_CustomerCode", customerCode);
+                }
+                else   //put
+                {
+                    sqlCommandDuplicate = "Proc_H_CheckCustomerCodeExists";
+                    parameters.Add("@customerCode", customerCode);
+                    parameters.Add("@customerId", customerId);
+                }
                 var check = dbConnection.QueryFirstOrDefault<bool>
                     (sqlCommandDuplicate, param: parameters, commandType: CommandType.StoredProcedure);
                 return check;

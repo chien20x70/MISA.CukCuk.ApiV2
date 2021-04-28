@@ -32,8 +32,13 @@ namespace MISA.Core.Services
                 CustomerExceptions.CheckCustomerCodeEmpty(customer.CustomerCode);
 
                 // Check trùng mã:
-                var isExits = _customerRepository.CheckCustomerCodeExist(customer.CustomerCode);
-                if (isExits == true)
+                var isPost = _customerRepository.CheckCustomerCodeExist(customer.CustomerCode, customer.CustomerId, true);
+                var isPut = _customerRepository.CheckCustomerCodeExist(customer.CustomerCode, customer.CustomerId, false);
+                if (isPost == true)
+                {
+                    throw new CustomerExceptions("Mã khách hàng đã tồn tại trên hệ thống!");
+                }
+                if (isPut == true)
                 {
                     throw new CustomerExceptions("Mã khách hàng đã tồn tại trên hệ thống!");
                 }

@@ -14,8 +14,9 @@ namespace MISA.Core.Interfaces.Repository
         /// CREATED BY: NXCHIEN 27/04/2021
         /// </summary>
         /// <param name="customerCode">Mã khách hàng</param>
+        /// <param name="isCheck">Check put: false or post: true</param>
         /// <returns></returns>
-        public bool CheckCustomerCodeExist(string customerCode);
+        public bool CheckCustomerCodeExist(string customerCode, Guid? customerId,bool isCheck);
 
         /// <summary>
         /// Kiểm tra số điện thoại đã tồn tại trong DB chưa

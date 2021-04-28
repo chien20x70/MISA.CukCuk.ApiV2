@@ -56,14 +56,14 @@ namespace MISA.Core.Services
         /// <returns>số dòng bị ảnh hưởng trong DB</returns>
         public int Insert(MISAEntity entity)
         {
-            // validate data
+            //TODO: validate data Insert
             Validate(entity);
             return _baseRepository.Insert(entity);
         }
 
         protected virtual void Validate(MISAEntity entity)
         {
-
+            
         }
 
         /// <summary>
@@ -75,6 +75,8 @@ namespace MISA.Core.Services
         /// <returns>số dòng bị ảnh hưởng trong DB</returns>
         public int Update(MISAEntity entity)
         {
+            //TODO: validate data PUT
+            Validate(entity);
             return _baseRepository.Update(entity);
         }
 
