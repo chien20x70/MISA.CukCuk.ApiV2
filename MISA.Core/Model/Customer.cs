@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MISA.Core.CustomAttribute;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,9 @@ namespace MISA.Core.Model
     public class Customer
     {
         public Guid CustomerId { get; set; }
+        [MISARequired("")]
         public string CustomerCode { get; set; }
+        [MISARequired("")]
         public string FullName { get; set; }
         public int? Gender { get; set; }
         public string MemberCardCode { get; set; }

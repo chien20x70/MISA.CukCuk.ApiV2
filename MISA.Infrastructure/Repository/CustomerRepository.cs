@@ -17,16 +17,16 @@ namespace MISA.Infrastructure.Repository
 
         /// <summary>
         /// Check CustomerCode đã tồn tại hay chưa
-        /// CREATED BY: NXCHIEN 27/04/2021
         /// </summary>
         /// <param name="customerCode">Mã khách hàng</param>
         /// <returns></returns>
+        /// CREATED BY: NXCHIEN 27/04/2021
         public bool CheckCustomerCodeExist(string customerCode, Guid? customerId, bool isCheck)
         {
             
             using (dbConnection = new MySqlConnection(ConnectionDB))
             {
-                var sqlCommandDuplicate ="";
+                var sqlCommandDuplicate = "";
                 DynamicParameters parameters = new DynamicParameters();
                 if (isCheck == true) // post
                 {
@@ -47,10 +47,10 @@ namespace MISA.Infrastructure.Repository
 
         /// <summary>
         /// Kiểm tra số điện thoại đã tồn tại trong DB chưa
-        /// CREATED BY: NXCHIEN 27/04/2021
         /// </summary>
         /// <param name="phoneNumber"></param>
         /// <returns></returns>
+        /// CREATED BY: NXCHIEN 27/04/2021
         public bool CheckPhoneNumberExits(string phoneNumber)
         {
             using (dbConnection = new MySqlConnection(ConnectionDB))

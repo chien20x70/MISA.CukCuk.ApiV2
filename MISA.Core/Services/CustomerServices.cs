@@ -21,19 +21,14 @@ namespace MISA.Core.Services
             _customerRepository = customerRepository;
         }
 
-        protected override void Validate(Customer entity)
+        protected override void CustomValidate(Customer entity, bool isCheckPutOrPost)
         {
             if (entity is Customer)
             {
                 var customer = entity as Customer;
-
-                // Validate dữ liệu:
-                // - Check các thông tin bắt buộc nhập:
-                CustomerExceptions.CheckCustomerCodeEmpty(customer.CustomerCode);
-
-                // Check trùng mã:
-                var isPost = _customerRepository.CheckCustomerCodeExist(customer.CustomerCode, customer.CustomerId, true);
-                var isPut = _customerRepository.CheckCustomerCodeExist(customer.CustomerCode, customer.CustomerId, false);
+                // Check trùng mã: với isCheckPutOrPost là true thì là POST còn false thì là PUT
+                var isPost = _customerRepository.CheckCustomerCodeExist(customer.CustomerCode, customer.CustomerId, isCheckPutOrPost);
+                var isPut = _customerRepository.CheckCustomerCodeExist(customer.CustomerCode, customer.CustomerId, isCheckPutOrPost);
                 if (isPost == true)
                 {
                     throw new CustomerExceptions("Mã khách hàng đã tồn tại trên hệ thống!");

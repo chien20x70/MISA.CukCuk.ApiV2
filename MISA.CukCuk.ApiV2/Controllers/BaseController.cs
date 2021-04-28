@@ -23,6 +23,11 @@ namespace MISA.CukCuk.ApiV2.Controllers
             _baseServices = baseServices;
         }
 
+        /// <summary>
+        /// Lấy tất cả đối tượng
+        /// </summary>
+        /// <returns></returns>
+        /// CreatedBy: NXChien (28/04/2021)
         [HttpGet]
         public IActionResult Get()
         {
@@ -44,11 +49,12 @@ namespace MISA.CukCuk.ApiV2.Controllers
                 throw;
             }
         }
+
         /// <summary>
-        /// Lấy ra khách hàng theo CustomerId
+        /// Lấy ra 1 đối tượng theo Id
         /// </summary>
-        /// <param name="customerId">Mã khách hàng</param>
-        /// <returns>customer: Khách hàng có mã customerId</returns>
+        /// <param name="entityId">Mã đối tượng</param>
+        /// <returns>entity: đối tượng có mã entityId</returns>
         /// CreatedBy: NXChien (21/04/2021)
         [HttpGet("{entityId}")]
         public IActionResult Get(Guid entityId)
@@ -73,13 +79,10 @@ namespace MISA.CukCuk.ApiV2.Controllers
         }
 
         /// <summary>
-        /// Thêm khách hàng
+        /// Thêm 1 đối tượng 
         /// </summary>
-        /// <param name="customer">Khách hàng cần thêm</param>
-        /// <returns>
-        ///     -StatusCode: thông báo thành công trả về 201
-        ///     -NoContent: trả về 204.
-        /// </returns>
+        /// <param name="entity">đối tượng cần thêm</param>
+        /// <returns></returns>
         /// CreatedBy: NXChien (21/04/2021)
         [HttpPost]
         public IActionResult Post([FromBody] MISAEntity entity)
@@ -103,10 +106,10 @@ namespace MISA.CukCuk.ApiV2.Controllers
         }
 
         /// <summary>
-        /// Sửa khách hàng theo customerId
+        /// Sửa 1 đối tượng theo Id
         /// </summary>
-        /// <param name="customerId">Mã khách hàng</param>
-        /// <param name="customer">Khách hàng cần sửa</param>
+        /// <param name="entityId">Mã đối tượng</param>
+        /// <param name="entity">đối tượng cần sửa</param>
         /// <returns>
         ///     -Thành công: trả về customer đã sửa.
         ///     -Thất bại: NoContent
@@ -145,13 +148,10 @@ namespace MISA.CukCuk.ApiV2.Controllers
         }
 
         /// <summary>
-        /// Xóa khách hàng
+        /// Xóa 1 đối tượng
         /// </summary>
-        /// <param name="customerId">Mã khách hàng</param>
-        /// <returns>
-        ///     -Thành công: Xóa thành công.
-        ///     -Thất bại: NoContent.
-        /// </returns>
+        /// <param name="entityId">Mã đối tượng</param>
+        /// <returns></returns>
         /// CreatedBy: NXChien (21/04/2021)
         [HttpDelete("{entityId}")]
         public IActionResult Delete(Guid entityId)
@@ -176,18 +176,18 @@ namespace MISA.CukCuk.ApiV2.Controllers
         }
 
         /// <summary>
-        /// Lọc danh sách khách hàng
+        /// Lọc danh sách đối tượng
         /// </summary>
-        /// <param name="pageNumber">Số khách hàng trong 1 trang</param>
+        /// <param name="pageSize">Số khách hàng trong 1 trang</param>
         /// <param name="pageIndex">Trang số bao nhiêu</param>
         /// <returns></returns>
         /// Created By: NXChien 22/04/2021
         [HttpGet("Paging")]
-        public IActionResult Filters(int pageNumber, int pageIndex)
+        public IActionResult Filters(int pageSize, int pageIndex)
         {
             try
             {
-                var entity = _baseServices.GetFilter(pageNumber, pageIndex);
+                var entity = _baseServices.GetFilter(pageSize, pageIndex);
                 if (entity != null)
                 {
                     return Ok(entity);
